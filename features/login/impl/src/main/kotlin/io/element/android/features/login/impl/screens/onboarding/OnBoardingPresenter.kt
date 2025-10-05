@@ -81,7 +81,7 @@ class OnBoardingPresenter(
             forcedAccountProvider ?: linkAccountProvider
         }
         val canLoginWithQrCode by produceState(initialValue = false, linkAccountProvider) {
-            value = linkAccountProvider == null
+            value = false
         }
         val canReportBug by remember { rageshakeFeatureAvailability.isAvailable() }.collectAsState(false)
         var showReportBug by rememberSaveable { mutableStateOf(false) }

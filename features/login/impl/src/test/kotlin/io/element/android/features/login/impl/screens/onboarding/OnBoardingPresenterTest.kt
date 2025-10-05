@@ -83,7 +83,6 @@ class OnBoardingPresenterTest {
             assertThat(initialState.canCreateAccount).isEqualTo(OnBoardingConfig.CAN_CREATE_ACCOUNT)
             assertThat(initialState.canReportBug).isFalse()
             assertThat(initialState.isAddingAccount).isFalse()
-            assertThat(awaitItem().canLoginWithQrCode).isTrue()
         }
     }
 
@@ -185,7 +184,7 @@ class OnBoardingPresenterTest {
             skipItems(1)
             awaitItem().also {
                 assertThat(it.defaultAccountProvider).isNull()
-                assertThat(it.canLoginWithQrCode).isTrue()
+                assertThat(it.canLoginWithQrCode).isFalse()
                 assertThat(it.canCreateAccount).isFalse()
             }
         }
@@ -206,7 +205,7 @@ class OnBoardingPresenterTest {
             skipItems(1)
             awaitItem().also {
                 assertThat(it.defaultAccountProvider).isEqualTo(ACCOUNT_PROVIDER_FROM_CONFIG)
-                assertThat(it.canLoginWithQrCode).isTrue()
+                assertThat(it.canLoginWithQrCode).isFalse()
                 assertThat(it.canCreateAccount).isFalse()
             }
         }
