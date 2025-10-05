@@ -41,7 +41,7 @@ fun aHomeserverDataList(): List<HomeserverData> {
 }
 
 fun aHomeserverData(
-    homeserverUrl: String = AuthenticationConfig.MATRIX_ORG_URL,
+    homeserverUrl: String = AuthenticationConfig.DEFAULT_HOMESERVER_URL,
     isWellknownValid: Boolean = true,
 ): HomeserverData {
     return HomeserverData(

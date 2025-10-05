@@ -26,7 +26,7 @@ class DefaultWebClientUrlForAuthenticationRetriever(
     private val wellknownRetriever: WellknownRetriever,
 ) : WebClientUrlForAuthenticationRetriever {
     override suspend fun retrieve(homeServerUrl: String): String {
-        if (homeServerUrl != AuthenticationConfig.MATRIX_ORG_URL) {
+        if (homeServerUrl != AuthenticationConfig.PUBLIC_MATRIX_ORG_URL) {
             Timber.w("Temporary account creation flow is only supported on matrix.org")
             throw AccountCreationNotSupported()
         }

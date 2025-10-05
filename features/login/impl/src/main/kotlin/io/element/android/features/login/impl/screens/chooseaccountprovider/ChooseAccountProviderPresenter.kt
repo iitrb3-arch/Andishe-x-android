@@ -64,8 +64,8 @@ class ChooseAccountProviderPresenter(
                     AccountProvider(
                         url = url,
                         subtitle = null,
-                        isPublic = url == AuthenticationConfig.MATRIX_ORG_URL,
-                        isMatrixOrg = url == AuthenticationConfig.MATRIX_ORG_URL,
+                        isPublic = url == AuthenticationConfig.PUBLIC_MATRIX_ORG_URL,
+                        isMatrixOrg = url == AuthenticationConfig.PUBLIC_MATRIX_ORG_URL,
                         isValid = true,
                     )
                 }

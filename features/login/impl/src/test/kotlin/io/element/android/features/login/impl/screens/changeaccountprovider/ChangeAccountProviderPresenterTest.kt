@@ -11,6 +11,7 @@ import app.cash.molecule.RecompositionMode
 import app.cash.molecule.moleculeFlow
 import app.cash.turbine.test
 import com.google.common.truth.Truth.assertThat
+import io.element.android.appconfig.AuthenticationConfig
 import io.element.android.features.enterprise.api.EnterpriseService
 import io.element.android.features.enterprise.test.FakeEnterpriseService
 import io.element.android.features.login.impl.accountprovider.AccountProvider
@@ -25,6 +26,8 @@ import org.junit.Test
 class ChangeAccountProviderPresenterTest {
     @get:Rule
     val warmUpRule = WarmUpRule()
+
+    private val defaultHomeserverDomain = AuthenticationConfig.DEFAULT_HOMESERVER_URL.removePrefix("https://")
 
     @Test
     fun `present - initial state`() = runTest {
@@ -41,11 +44,11 @@ class ChangeAccountProviderPresenterTest {
             assertThat(initialState.accountProviders).isEqualTo(
                 listOf(
                     AccountProvider(
-                        url = "https://matrix.org",
-                        title = "matrix.org",
+                        url = AuthenticationConfig.DEFAULT_HOMESERVER_URL,
+                        title = defaultHomeserverDomain,
                         subtitle = null,
-                        isPublic = true,
-                        isMatrixOrg = true,
+                        isPublic = false,
+                        isMatrixOrg = false,
                         isValid = true,
                     )
                 )
@@ -71,11 +74,11 @@ class ChangeAccountProviderPresenterTest {
             assertThat(initialState.accountProviders).isEqualTo(
                 listOf(
                     AccountProvider(
-                        url = "https://matrix.org",
-                        title = "matrix.org",
+                        url = AuthenticationConfig.DEFAULT_HOMESERVER_URL,
+                        title = defaultHomeserverDomain,
                         subtitle = null,
-                        isPublic = true,
-                        isMatrixOrg = true,
+                        isPublic = false,
+                        isMatrixOrg = false,
                         isValid = true,
                     ),
                     AccountProvider(
@@ -109,11 +112,11 @@ class ChangeAccountProviderPresenterTest {
             assertThat(initialState.accountProviders).isEqualTo(
                 listOf(
                     AccountProvider(
-                        url = "https://matrix.org",
-                        title = "matrix.org",
+                        url = AuthenticationConfig.DEFAULT_HOMESERVER_URL,
+                        title = defaultHomeserverDomain,
                         subtitle = null,
-                        isPublic = true,
-                        isMatrixOrg = true,
+                        isPublic = false,
+                        isMatrixOrg = false,
                         isValid = true,
                     )
                 )

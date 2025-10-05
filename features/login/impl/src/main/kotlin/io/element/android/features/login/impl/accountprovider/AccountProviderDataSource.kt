@@ -22,13 +22,13 @@ class AccountProviderDataSource(
     enterpriseService: EnterpriseService,
 ) {
     private val defaultAccountProvider =
-        (enterpriseService.defaultHomeserverList().firstOrNull { it != EnterpriseService.ANY_ACCOUNT_PROVIDER } ?: AuthenticationConfig.MATRIX_ORG_URL)
+        (enterpriseService.defaultHomeserverList().firstOrNull { it != EnterpriseService.ANY_ACCOUNT_PROVIDER } ?: AuthenticationConfig.DEFAULT_HOMESERVER_URL)
             .let { url ->
                 AccountProvider(
                     url = url,
                     subtitle = null,
-                    isPublic = url == AuthenticationConfig.MATRIX_ORG_URL,
-                    isMatrixOrg = url == AuthenticationConfig.MATRIX_ORG_URL,
+                    isPublic = url == AuthenticationConfig.PUBLIC_MATRIX_ORG_URL,
+                    isMatrixOrg = url == AuthenticationConfig.PUBLIC_MATRIX_ORG_URL,
                 )
             }
 

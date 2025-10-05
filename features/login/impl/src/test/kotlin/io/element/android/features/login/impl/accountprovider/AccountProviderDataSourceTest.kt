@@ -21,6 +21,8 @@ class AccountProviderDataSourceTest {
     @get:Rule
     val warmUpRule = WarmUpRule()
 
+    private val defaultHomeserverDomain = AuthenticationConfig.DEFAULT_HOMESERVER_URL.removePrefix("https://")
+
     @Test
     fun `present - initial state`() = runTest {
         val sut = AccountProviderDataSource(FakeEnterpriseService())
@@ -28,11 +30,11 @@ class AccountProviderDataSourceTest {
             val initialState = awaitItem()
             assertThat(initialState).isEqualTo(
                 AccountProvider(
-                    url = AuthenticationConfig.MATRIX_ORG_URL,
-                    title = "matrix.org",
+                    url = AuthenticationConfig.DEFAULT_HOMESERVER_URL,
+                    title = defaultHomeserverDomain,
                     subtitle = null,
-                    isPublic = true,
-                    isMatrixOrg = true,
+                    isPublic = false,
+                    isMatrixOrg = false,
                     isValid = false,
                 )
             )
@@ -43,18 +45,18 @@ class AccountProviderDataSourceTest {
     fun `present - initial state - matrix org`() = runTest {
         val sut = AccountProviderDataSource(
             FakeEnterpriseService(
-                defaultHomeserverListResult = { listOf(AuthenticationConfig.MATRIX_ORG_URL) }
+                defaultHomeserverListResult = { listOf(AuthenticationConfig.DEFAULT_HOMESERVER_URL) }
             )
         )
         sut.flow.test {
             val initialState = awaitItem()
             assertThat(initialState).isEqualTo(
                 AccountProvider(
-                    url = AuthenticationConfig.MATRIX_ORG_URL,
-                    title = "matrix.org",
+                    url = AuthenticationConfig.DEFAULT_HOMESERVER_URL,
+                    title = defaultHomeserverDomain,
                     subtitle = null,
-                    isPublic = true,
-                    isMatrixOrg = true,
+                    isPublic = false,
+                    isMatrixOrg = false,
                     isValid = false,
                 )
             )
@@ -65,18 +67,18 @@ class AccountProviderDataSourceTest {
     fun `present - ensure that default homeserver is not star char`() = runTest {
         val sut = AccountProviderDataSource(
             FakeEnterpriseService(
-                defaultHomeserverListResult = { listOf(EnterpriseService.ANY_ACCOUNT_PROVIDER, AuthenticationConfig.MATRIX_ORG_URL) }
+                defaultHomeserverListResult = { listOf(EnterpriseService.ANY_ACCOUNT_PROVIDER, AuthenticationConfig.DEFAULT_HOMESERVER_URL) }
             )
         )
         sut.flow.test {
             val initialState = awaitItem()
             assertThat(initialState).isEqualTo(
                 AccountProvider(
-                    url = AuthenticationConfig.MATRIX_ORG_URL,
-                    title = "matrix.org",
+                    url = AuthenticationConfig.DEFAULT_HOMESERVER_URL,
+                    title = defaultHomeserverDomain,
                     subtitle = null,
-                    isPublic = true,
-                    isMatrixOrg = true,
+                    isPublic = false,
+                    isMatrixOrg = false,
                     isValid = false,
                 )
             )
@@ -88,7 +90,7 @@ class AccountProviderDataSourceTest {
         val sut = AccountProviderDataSource(FakeEnterpriseService())
         sut.flow.test {
             val initialState = awaitItem()
-            assertThat(initialState.url).isEqualTo(AuthenticationConfig.MATRIX_ORG_URL)
+            assertThat(initialState.url).isEqualTo(AuthenticationConfig.DEFAULT_HOMESERVER_URL)
             sut.userSelection(AccountProvider(url = "https://example.com"))
             val changedState = awaitItem()
             assertThat(changedState).isEqualTo(
@@ -103,7 +105,7 @@ class AccountProviderDataSourceTest {
             )
             sut.reset()
             val resetState = awaitItem()
-            assertThat(resetState.url).isEqualTo(AuthenticationConfig.MATRIX_ORG_URL)
+            assertThat(resetState.url).isEqualTo(AuthenticationConfig.DEFAULT_HOMESERVER_URL)
         }
     }
 }

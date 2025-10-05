@@ -29,13 +29,13 @@ class ChangeAccountProviderPresenter(
             enterpriseService.defaultHomeserverList()
                 .filter { it != EnterpriseService.ANY_ACCOUNT_PROVIDER }
                 .map { it.ensureProtocol() }
-                .ifEmpty { listOf(AuthenticationConfig.MATRIX_ORG_URL) }
+                .ifEmpty { listOf(AuthenticationConfig.DEFAULT_HOMESERVER_URL) }
                 .map { url ->
                     AccountProvider(
                         url = url,
                         subtitle = null,
-                        isPublic = url == AuthenticationConfig.MATRIX_ORG_URL,
-                        isMatrixOrg = url == AuthenticationConfig.MATRIX_ORG_URL,
+                        isPublic = url == AuthenticationConfig.PUBLIC_MATRIX_ORG_URL,
+                        isMatrixOrg = url == AuthenticationConfig.PUBLIC_MATRIX_ORG_URL,
                         isValid = true,
                     )
                 }
