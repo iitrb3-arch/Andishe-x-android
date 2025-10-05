@@ -1,0 +1,61 @@
+name: Build Signed APK (Release)
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+      - main
+
+concurrency:
+  group: build-apk-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  APP_NAME: "Andisheh Hosseini"
+  PUBLISHER: "FARHAD SANAEI"
+  HS_URL: "https://edu97.ir"
+  GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx4096m -Dfile.encoding=UTF-8"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Create keystore
+        run: |
+          keytool -genkey -v -keystore release-key.keystore \
+          -alias andishehhosseini \
+          -keyalg RSA -keysize 2048 -validity 10000 \
+          -storepass farhadsanayi123 -keypass farhadsanayi123 \
+          -dname "CN=FARHAD SANAEI, OU=Developer, O=Andisheh Hosseini, L=Tehran, C=IR"
+
+      - name: Build signed release APK
+        run: |
+          ./gradlew clean :app:assembleRelease \
+          -Pandroid.injected.signing.store.file=release-key.keystore \
+          -Pandroid.injected.signing.store.password=farhadsanayi123 \
+          -Pandroid.injected.signing.key.alias=andishehhosseini \
+          -Pandroid.injected.signing.key.password=farhadsanayi123
+
+      - name: List APKs
+        run: ls -R app/build/outputs/apk/release || true
+
+      - name: Upload signed APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-signed
+          path: app/build/outputs/apk/release/app-release.apk
+          if-no-files-found: error
