@@ -1,4 +1,4 @@
-name: Build Optimized APK
+name: Build Release APK (arm64 only)
 
 on:
   workflow_dispatch:
@@ -8,11 +8,10 @@ on:
 
 jobs:
   build:
-    name: Build Release APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up JDK 17
@@ -24,7 +23,7 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Build optimized release APK
+      - name: Build Release APK (arm64 only)
         run: |
           ./gradlew clean :app:assembleRelease \
             -PminifyEnabled=true \
@@ -32,12 +31,12 @@ jobs:
             -PsplitAbis=true \
             -PabiFilters=arm64-v8a
 
-      - name: List built APKs
+      - name: List outputs
         run: ls -R app/build/outputs/apk/release || true
 
-      - name: Upload release APK
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: Andishe-Release-APK
-          path: app/build/outputs/apk/release/*.apk
+          name: AndisheHoseini-Release-arm64
+          path: app/build/outputs/apk/release/*arm64-v8a*.apk
           if-no-files-found: error
