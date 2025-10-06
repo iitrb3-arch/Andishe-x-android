@@ -20,6 +20,7 @@ setupDependencyInjection()
 dependencies {
     implementation(libs.compound)
     api(projects.features.enterprise.api)
+    implementation(projects.appconfig)
     implementation(projects.libraries.architecture)
     implementation(projects.libraries.matrix.api)
 
