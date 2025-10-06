@@ -8,7 +8,7 @@
 package io.element.android.features.enterprise.impl
 
 import com.google.common.truth.Truth.assertThat
-import io.element.android.libraries.matrix.test.A_HOMESERVER_URL
+import io.element.android.appconfig.AuthenticationConfig
 import io.element.android.libraries.matrix.test.A_SESSION_ID
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
@@ -21,15 +21,18 @@ class DefaultEnterpriseServiceTest {
     }
 
     @Test
-    fun `defaultHomeserverList should return empty list`() {
+    fun `defaultHomeserverList should return only the configured homeserver`() {
         val defaultEnterpriseService = DefaultEnterpriseService()
-        assertThat(defaultEnterpriseService.defaultHomeserverList()).isEmpty()
+        assertThat(defaultEnterpriseService.defaultHomeserverList())
+            .containsExactly(AuthenticationConfig.MATRIX_ORG_URL.removeSuffix("/"))
     }
 
     @Test
-    fun `isAllowedToConnectToHomeserver is true for all homeserver urls`() = runTest {
+    fun `isAllowedToConnectToHomeserver is true only for the configured homeserver`() = runTest {
         val defaultEnterpriseService = DefaultEnterpriseService()
-        assertThat(defaultEnterpriseService.isAllowedToConnectToHomeserver(A_HOMESERVER_URL)).isTrue()
+        assertThat(defaultEnterpriseService.isAllowedToConnectToHomeserver(AuthenticationConfig.MATRIX_ORG_URL)).isTrue()
+        assertThat(defaultEnterpriseService.isAllowedToConnectToHomeserver("edu97.ir")).isTrue()
+        assertThat(defaultEnterpriseService.isAllowedToConnectToHomeserver("https://matrix.org")).isFalse()
     }
 
     @Test
